@@ -1,0 +1,20 @@
+{
+  "name": "restaurant_app",
+  "version": "1.0.0",
+  "description": "A restaurant food app in node and express",
+  "homepage": "https://github.com/yarajabr2005-svg/restaurant_app#readme",
+  "bugs": {
+    "url": "https://github.com/yarajabr2005-svg/restaurant_app/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://%5Byarajabr2005-svg%5D@github.com/yarajabr2005-svg/restaurant_app.git"
+  },
+  "license": "ISC",
+  "author": "Yara Jabr <yarajabr2005@gmail.com>",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
