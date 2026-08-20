@@ -41,4 +41,44 @@ const registerController=async(req,res)=>{
 
 }
 
-module.exports={registerController}
+
+//Login
+const loginController=async(req,res)=>{
+    try{
+        const{email, password}=req.body
+
+        //validation
+        if(!email || !password){
+            return res.status(500).send({
+                success: false,
+                message: 'Please Provide email and password'
+            })
+        }
+
+        //check user
+        const user=await userModel.findOne({email:email, password:password})
+        if(!user){
+            return res.status(404).send({
+                success:false,
+                message: 'User Not Found OR Incorrect Password'
+            })
+        }
+
+        res.status(200).send({
+            success:true,
+            message: 'Login Successful.',
+            user // later on we will tokenize
+        })
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).send({
+            success: false,
+            message: 'Error in Login API.',
+            error
+        })
+    }
+
+}
+
+module.exports={registerController, loginController}
