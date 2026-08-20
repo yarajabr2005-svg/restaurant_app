@@ -4,12 +4,12 @@ const mongoose=require('mongoose')
 const userSchema=new mongoose.Schema({ // what about id??
     userName:{
         type:String,
-        require:[true, 'Username is required.']//this field is required and added a validation message too
+        required:[true, 'Username is required.']//this field is required and added a validation message too
     }, 
 
     email:{
         type: String,
-        require:[true, 'Email is required,'],
+        required:[true, 'Email is required,'],
         unique:true
     }, 
     
@@ -25,7 +25,7 @@ const userSchema=new mongoose.Schema({ // what about id??
 
     phone:{
         type:String, 
-        require: [true, 'Phone number is required.']
+        required: [true, 'Phone number is required.']
     }, 
 
     userType:{

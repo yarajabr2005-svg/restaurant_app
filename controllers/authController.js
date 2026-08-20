@@ -1,4 +1,6 @@
 const userModel = require("../models/userModel")
+const bcrypt= require("bcryptjs")
+const JWT=require('jsonwebtoken')
 
 //Register
 const registerController=async(req,res)=>{
@@ -22,8 +24,12 @@ const registerController=async(req,res)=>{
             })
         }
 
+        //hashing the password before saving the user
+        const salt = await bcrypt.genSalt(10); // the higher the salt rounds, the more tightly the password will be encrypted
+        const hashedPassword = await bcrypt.hash(password, salt);
+
         //if the validation is completed, create user
-        const user=await userModel.create({userName, email, password, address, phone})
+        const user=await userModel.create({userName, email, password:hashedPassword, address, phone})
         res.status(201).send({
             success:true,
             message: 'User Successfully Registered',
@@ -51,22 +57,38 @@ const loginController=async(req,res)=>{
         if(!email || !password){
             return res.status(500).send({
                 success: false,
-                message: 'Please Provide email and password'
+                message: 'Please Provide Email and Password.'
             })
         }
 
-        //check user
-        const user=await userModel.findOne({email:email, password:password})
+        //check user email
+        const user=await userModel.findOne({email})
         if(!user){
             return res.status(404).send({
                 success:false,
-                message: 'User Not Found OR Incorrect Password'
+                message: 'User Not Found.'
             })
         }
 
+        //Check password || Compare password
+        const isMatch=await bcrypt.compare(password, user.password)
+        if(!isMatch){
+            return res.status(500).send({
+                success: false,
+                message: "Invalid Credentials"
+            })
+        }//As soon as the password matxhes, we create the token
+
+        //create token        //this id is an object inside sign
+        const token=JWT.sign({id:user._id}, process.env.JWT_SERCRET, {
+            expiresIn:"7d"
+        });//sign function to encrypt (here based on id)
+                              
+        user.password=undefined // to hide password even more from being displayed
         res.status(200).send({
             success:true,
             message: 'Login Successful.',
+            token,
             user // later on we will tokenize
         })
     }
