@@ -1,7 +1,7 @@
 const mongoose =require('mongoose')
 const colors=require('colors')
 
-//function fir mongodb database connection
+//function for mongodb database connection
  const connectDB=async()=>{
     try{
         await mongoose.connect(process.env.MONGO_URL)
