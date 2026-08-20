@@ -3,10 +3,13 @@ const colors= require('colors')
 const cors=require('cors')
 const morgan=require('morgan')
 const dotenv=require('dotenv')
+const connectDB = require('./config/db')
 
 //dot env configuration
 dotenv.config() //if it was in a different folder, we would have to provide the path with curly brackets inside config()
 
+//DB Connect
+connectDB();
 //rest object
 const app=express()
 
