@@ -1,7 +1,7 @@
 const mongoose=require('mongoose')
 
 //schema
-const userSchema=new mongoose.Schema({ // what about id??
+const userSchema=new mongoose.Schema({ 
     userName:{
         type:String,
         required:[true, 'Username is required.']//this field is required and added a validation message too

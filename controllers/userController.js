@@ -1,4 +1,5 @@
 const userModel = require("../models/userModel");
+const bcrypt = require("bcryptjs");
 
 //Get user info
 const getUserController=async(req, res)=>{ //Get user's own profile (data)
@@ -32,7 +33,7 @@ const getUserController=async(req, res)=>{ //Get user's own profile (data)
 
 }
 
-
+//-----------------------------------------------------------
 //update user profile (data)
 const updateUserController=async(req,res)=>{
     try{
@@ -70,4 +71,58 @@ const updateUserController=async(req,res)=>{
 
 }
 
-module.exports={getUserController, updateUserController}
+//----------------------------------------------
+//Update Password
+const updatePasswordController=async(req,res)=>{
+    try{
+        //find user
+        const user= await userModel.findById({_id:req.body.id})
+        //validation
+        if(!user){
+            return res.ststaus(404).send({
+                success:false,
+                message: "User not found."
+            })
+        }
+        //get new password and old password from user req body
+        const {oldPassword, newPassword}=req.body
+        if(!oldPassword||!newPassword){
+            return res.status(500).send({
+                success:false,
+                message:"Please provide Old and New Password."
+            })
+        }
+        //Check password || Compare password
+        const isMatch=await bcrypt.compare(oldPassword, user.password)
+        if(!isMatch){
+            return res.status(500).send({
+                success: false,
+                message: "Invalid old password."
+            })
+        }
+
+        //hash new password
+        const salt = await bcrypt.genSalt(10); 
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+        //update password with new hashed password
+        user.password=hashedPassword
+        await user.save()
+
+        res.status(200).send({
+            success:true,
+            message:"Password updated Successfully."
+        })
+
+
+    }
+    catch(error){
+        console.log(error);
+        return res.status(500).send({
+            success:false,
+            message: "Error in update password API. ", 
+            error
+        })
+    }
+}
+
+module.exports={getUserController, updateUserController, updatePasswordController}
