@@ -80,7 +80,7 @@ const loginController=async(req,res)=>{
         }//As soon as the password matxhes, we create the token
 
         //create token        //this id is an object inside sign
-        const token=JWT.sign({id:user._id}, process.env.JWT_SERCRET, {
+        const token=JWT.sign({id:user._id}, process.env.JWT_SECRET, {
             expiresIn:"7d"
         });//sign function to encrypt (here based on id)
                               

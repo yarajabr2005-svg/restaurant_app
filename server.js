@@ -23,7 +23,8 @@ app.use(morgan('dev'))
 //URL=> http://localhost:8080
 app.use('/api/v1/test', require('./routes/testRoutes'));//Tells Express: "For any request that starts with /api/v1/test,
                                                         // use the routes defined in testRoutes.js."
-app.use('/api/v1/auth', require('./routes/authRoutes'));                                                      
+app.use('/api/v1/auth', require('./routes/authRoutes'));   
+app.use('/api/v1/user', require('./routes/userRoutes'))                                                   
 
 app.get('/', (req, res)=>{
     return res.status(200).send('<h1 style="color: pink; font-size: 32px;">Welcome to Food Server App API Base Project</h1>')
