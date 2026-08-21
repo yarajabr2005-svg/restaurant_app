@@ -1,5 +1,8 @@
 const express=require('express')
-const { getUserController, updateUserController, updatePasswordController } = require('../controllers/userController')
+const { getUserController, 
+    updateUserController, 
+    updatePasswordController, 
+    deleteUserController } = require('../controllers/userController')
 const authMiddleware = require('../middleware/authMiddleware')
 
 const router=express.Router()
@@ -13,5 +16,8 @@ router.put('/updateUser', authMiddleware, updateUserController)
 
 //UPDATE PASSWORD (already logged in) || POST
 router.post('/updatePassword', authMiddleware, updatePasswordController)
+
+//DELETE USER ACCOUNT ||DELETE
+router.delete('/deleteUser', authMiddleware, deleteUserController)
 
 module.exports=router

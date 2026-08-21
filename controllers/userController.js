@@ -117,7 +117,7 @@ const updatePasswordController=async(req,res)=>{
     }
     catch(error){
         console.log(error);
-        return res.status(500).send({
+        res.status(500).send({
             success:false,
             message: "Error in update password API. ", 
             error
@@ -125,4 +125,37 @@ const updatePasswordController=async(req,res)=>{
     }
 }
 
-module.exports={getUserController, updateUserController, updatePasswordController}
+//------------------------------------------------
+//Delete user account
+const deleteUserController=async(req, res)=>{
+    try{
+        //find and delete user
+        const user=await userModel.findByIdAndDelete(req.body.id)
+        //validation
+        if(!user){
+            return res.ststaus(404).send({
+                success:false,
+                message: "User not found."
+            })
+        }
+        return res.status(200).send({
+            success:true,
+            message: "Your account has been deleted."
+        })
+
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).send({
+            success:true,
+            message:" Error in Delete Account API.",
+
+        })
+    }
+
+}
+
+module.exports={getUserController,
+    updateUserController,
+    updatePasswordController, 
+    deleteUserController}
